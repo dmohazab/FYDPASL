@@ -62,33 +62,33 @@ def draw_styled_landmarks(image, results):
                               )
 
 
-# cap = cv2.VideoCapture(1)
-# # Set mediapipe model
-# with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-#     while cap.isOpened():
+cap = cv2.VideoCapture(1)
+# Set mediapipe model
+with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+    while cap.isOpened():
 
-#         # Read feed
-#         ret, frame = cap.read()
+        # Read feed
+        ret, frame = cap.read()
 
-#         # Make detections
-#         image, results = mediapipe_detection(frame, holistic)
+        # Make detections
+        image, results = mediapipe_detection(frame, holistic)
 
-#         # Draw landmarks
-#         draw_styled_landmarks(image, results)
+        # Draw landmarks
+        draw_styled_landmarks(image, results)
 
-#         # Show to screen
-#         cv2.imshow('OpenCV Feed', image)
+        # Show to screen
+        cv2.imshow('OpenCV Feed', image)
 
-#         # Break gracefully
-#         if cv2.waitKey(10) & 0xFF == ord('q'):
-#             break
-#     cap.release()
-#     cv2.destroyAllWindows()
+        # Break gracefully
+        if cv2.waitKey(10) & 0xFF == ord('q'):
+            break
+    cap.release()
+    cv2.destroyAllWindows()
 
-# print(len(results.left_hand_landmarks.landmark))
-# results
-# draw_landmarks(frame, results)
-# plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+print(len(results.left_hand_landmarks.landmark))
+results
+draw_landmarks(frame, results)
+plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
 def extract_keypoints(results):
     pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten(
@@ -175,48 +175,48 @@ sequence_length = 30
 # cap.release()
 # cv2.destroyAllWindows()
 
-from sklearn.model_selection import train_test_split
-from tensorflow.keras.utils import to_categorical
-label_map = {label:num for num, label in enumerate(actions)}
+# from sklearn.model_selection import train_test_split
+# from tensorflow.keras.utils import to_categorical
+# label_map = {label:num for num, label in enumerate(actions)}
 
-sequences, labels = [], []
-for action in actions:
-    for sequence in range(no_sequences):
-        window = []
-        for frame_num in range(sequence_length):
-            res = np.load(os.path.join(DATA_PATH, action, str(sequence), "{}.npy".format(frame_num)))
-            window.append(res)
-        sequences.append(window)
-        labels.append(label_map[action])
+# sequences, labels = [], []
+# for action in actions:
+#     for sequence in range(no_sequences):
+#         window = []
+#         for frame_num in range(sequence_length):
+#             res = np.load(os.path.join(DATA_PATH, action, str(sequence), "{}.npy".format(frame_num)))
+#             window.append(res)
+#         sequences.append(window)
+#         labels.append(label_map[action])
 
-X = np.array(sequences)
-y = to_categorical(labels).astype(int)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05)
+# X = np.array(sequences)
+# y = to_categorical(labels).astype(int)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.05)
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense
-from tensorflow.keras.callbacks import TensorBoard
+# from tensorflow.keras.models import Sequential
+# from tensorflow.keras.layers import LSTM, Dense
+# from tensorflow.keras.callbacks import TensorBoard
 
-log_dir = os.path.join('Logs')
-tb_callback = TensorBoard(log_dir=log_dir)
+# log_dir = os.path.join('Logs')
+# tb_callback = TensorBoard(log_dir=log_dir)
 
-model = Sequential()
-model.add(LSTM(64, return_sequences=True, activation='relu', input_shape=(30,1662)))
-model.add(LSTM(128, return_sequences=True, activation='relu'))
-model.add(LSTM(64, return_sequences=False, activation='relu'))
-model.add(Dense(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
-model.add(Dense(actions.shape[0], activation='softmax'))
+# model = Sequential()
+# model.add(LSTM(64, return_sequences=True, activation='relu', input_shape=(30,1662)))
+# model.add(LSTM(128, return_sequences=True, activation='relu'))
+# model.add(LSTM(64, return_sequences=False, activation='relu'))
+# model.add(Dense(64, activation='relu'))
+# model.add(Dense(32, activation='relu'))
+# model.add(Dense(actions.shape[0], activation='softmax'))
 
-res = [.7, 0.2, 0.1]
-model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
-model.fit(X_train, y_train, epochs=2000, callbacks=[tb_callback])
+# res = [.7, 0.2, 0.1]
+# model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
+# model.fit(X_train, y_train, epochs=2000, callbacks=[tb_callback])
 
-res = model.predict(X_test)
+# res = model.predict(X_test)
 
-model.save('action.h5')
-del model
-model.load_weights('action.h5')
+# model.save('action.h5')
+# del model
+# model.load_weights('action.h5')
 
 # from sklearn.metrics import multilabel_confusion_matrix, accuracy_score
 # yhat = model.predict(X_test)
