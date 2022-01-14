@@ -80,7 +80,7 @@ def extract_keypoints(results):
 DATA_PATH = os.path.join('MP_Data')
 
 # Actions that we try to detect
-actions = np.array(['hello'])
+actions = np.array(['hello','no'])
 
 # Thirty videos worth of data
 no_sequences = 30
@@ -88,7 +88,6 @@ no_sequences = 30
 # Videos are going to be 30 frames in lengh
 sequence_length = 30
 
-actions = np.array(['hello'])
 label_map = {label:num for num, label in enumerate(actions)}
 
 sequences, labels = [], []
@@ -121,7 +120,7 @@ model.add(Dense(actions.shape[0], activation='softmax'))
 res = [.7, 0.2, 0.1]
 
 model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
-model.fit(X_train, y_train, epochs=500, callbacks=[tb_callback])
+model.fit(X_train, y_train, epochs=2000, callbacks=[tb_callback])
 
 res = model.predict(X_test)
 

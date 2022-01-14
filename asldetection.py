@@ -62,33 +62,33 @@ def draw_styled_landmarks(image, results):
                               )
 
 
-cap = cv2.VideoCapture(1)
-# Set mediapipe model
-with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
-    while cap.isOpened():
+# cap = cv2.VideoCapture(0)
+# # Set mediapipe model
+# with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
+#     while cap.isOpened():
 
-        # Read feed
-        ret, frame = cap.read()
+#         # Read feed
+#         ret, frame = cap.read()
 
-        # Make detections
-        image, results = mediapipe_detection(frame, holistic)
+#         # Make detections
+#         image, results = mediapipe_detection(frame, holistic)
 
-        # Draw landmarks
-        draw_styled_landmarks(image, results)
+#         # Draw landmarks
+#         draw_styled_landmarks(image, results)
 
-        # Show to screen
-        cv2.imshow('OpenCV Feed', image)
+#         # Show to screen
+#         cv2.imshow('OpenCV Feed', image)
 
-        # Break gracefully
-        if cv2.waitKey(10) & 0xFF == ord('q'):
-            break
-    cap.release()
-    cv2.destroyAllWindows()
+#         # Break gracefully
+#         if cv2.waitKey(10) & 0xFF == ord('q'):
+#             break
+#     cap.release()
+#     cv2.destroyAllWindows()
 
-print(len(results.left_hand_landmarks.landmark))
-results
-draw_landmarks(frame, results)
-plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+# print(len(results.left_hand_landmarks.landmark))
+# results
+# draw_landmarks(frame, results)
+# plt.imshow(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
 def extract_keypoints(results):
     pose = np.array([[res.x, res.y, res.z, res.visibility] for res in results.pose_landmarks.landmark]).flatten(
@@ -105,7 +105,7 @@ def extract_keypoints(results):
 DATA_PATH = os.path.join('MP_Data')
 
 # Actions that we try to detect
-actions = np.array(['hello'])
+actions = np.array(['no'])
 
 # Thirty videos worth of data
 no_sequences = 30
