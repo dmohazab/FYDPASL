@@ -170,7 +170,7 @@ sequence_length = 30
 
 #     cap.release()
 #     cv2.destroyAllWindows()
-##1:24:07
+##1:24:07 figure out way
 
 # cap.release()
 # cv2.destroyAllWindows()
