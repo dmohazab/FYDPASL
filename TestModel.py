@@ -7,6 +7,7 @@ from matplotlib import pyplot as plt
 import time
 import mediapipe as mp
 from tensorflow.keras.models import load_model
+from timeit import default_timer as timer
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
@@ -87,7 +88,7 @@ def prob_viz(res, actions, input_frame, colors):
 sequence = []
 sentence = []
 threshold = 0.8
-
+start = None
 actions = np.array(['hello','no'])
 
 model = load_model('action')
@@ -121,7 +122,16 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             
         #3. Viz logic
             if res[np.argmax(res)] > threshold: 
-                if len(sentence) > 0: 
+                if actions[np.argmax(res)] == '':
+                    if start:
+                        elapsed = timer() - start
+                        if elapsed>5:
+                            break
+                    else:
+                        start = timer()
+                if start:
+                    start = None
+                if len(sentence) > 0:
                     if actions[np.argmax(res)] != sentence[-1]:
                         sentence.append(actions[np.argmax(res)])
                 else:
