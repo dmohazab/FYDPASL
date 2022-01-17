@@ -55,7 +55,7 @@ res = [.7, 0.2, 0.1]
 
 model.compile(optimizer='Adam', loss='categorical_crossentropy',
               metrics=['categorical_accuracy'])
-model.fit(X_train, y_train, epochs=500, callbacks=[tb_callback])
+model.fit(X_train, y_train, epochs=2000, callbacks=[tb_callback])
 
 res = model.predict(X_test)
 
