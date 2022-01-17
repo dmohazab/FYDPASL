@@ -125,7 +125,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
                 if actions[np.argmax(res)] == '-':
                     if start:
                         elapsed = timer() - start
-                        if elapsed>5:
+                        if elapsed>10:
                             break
                     else:
                         start = timer()
@@ -137,8 +137,8 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
                 else:
                     sentence.append(actions[np.argmax(res)])
 
-            if len(sentence) > 5: 
-                sentence = sentence[-5:]
+            if len(sentence) > 7: 
+                sentence = []
 
             # Viz probabilities
             image = prob_viz(res, actions, image, colors)
