@@ -75,7 +75,7 @@ def extract_keypoints(results):
     return np.concatenate([pose, lh, rh])
 
 
-colors = [(245,117,16), (117,245,16), (16,117,245)]
+colors = [(245,117,16), (117,245,16), (16,117,245), (200,117,245)]
 def prob_viz(res, actions, input_frame, colors):
     output_frame = input_frame.copy()
     for num, prob in enumerate(res):
@@ -89,7 +89,7 @@ sequence = []
 sentence = []
 threshold = 0.8
 start = None
-actions = np.array(['hello','no', '-'])
+actions = np.array(['hello','no', '-', 'thank-you'])
 
 model = load_model('action')
 
@@ -146,7 +146,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             
         cv2.rectangle(image, (0,0), (640, 40), (245, 117, 16), -1)
         sentence = (' '.join(sentence)).replace('-', ' ')
-        cv2.putText(image, ' '.join(sentence), (3,30), 
+        cv2.putText(image, sentence, (3,30), 
                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
         
         # Show to screen

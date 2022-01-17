@@ -15,7 +15,7 @@ import time
 DATA_PATH = os.path.join('MP_Data')
 
 # Actions that we try to detect
-actions = np.array(['hello', 'no', '-'])
+actions = np.array(['hello', 'no', '-', 'thank-you'])
 
 # Thirty videos worth of data
 no_sequences = 30

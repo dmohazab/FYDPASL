@@ -75,7 +75,7 @@ def extract_keypoints(results):
 DATA_PATH = os.path.join('MP_Data')
 
 # Actions that we try to detect
-actions = np.array(['-'])
+actions = np.array(['thank-you'])
 
 # Thirty videos worth of data
 no_sequences = 30
