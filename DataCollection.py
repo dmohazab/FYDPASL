@@ -75,7 +75,7 @@ def extract_keypoints(results):
 DATA_PATH = os.path.join('MP_Data')
 
 # Actions that we try to detect
-actions = np.array(['Hello'])
+actions = np.array(['hello'])
 
 # Thirty videos worth of data
 no_sequences = 30
@@ -93,7 +93,7 @@ for action in actions:
 
 #Keypoints for training and testing
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 # Set mediapipe model
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
 
