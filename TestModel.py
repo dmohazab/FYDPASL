@@ -87,7 +87,7 @@ def prob_viz(res, actions, input_frame, colors):
 # 1. New detection variables
 sequence = []
 sentence = []
-threshold = 0.8
+threshold = 0.9
 start = None
 actions = np.array(['hello','no', '-', 'thank-you'])
 
