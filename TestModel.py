@@ -131,11 +131,12 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
                         start = timer()
                 elif start:
                     start = None
-                if len(sentence) > 0:
-                    if actions[np.argmax(res)] != sentence[-1]:
-                        sentence.append(actions[np.argmax(res)])
                 else:
-                    sentence.append(actions[np.argmax(res)])
+                    if len(sentence) > 0:
+                        if actions[np.argmax(res)] != sentence[-1]:
+                            sentence.append(actions[np.argmax(res)])
+                    else:
+                        sentence.append(actions[np.argmax(res)])
 
             if len(sentence) > 7: 
                 sentence = []
@@ -144,6 +145,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             image = prob_viz(res, actions, image, colors)
             
         cv2.rectangle(image, (0,0), (640, 40), (245, 117, 16), -1)
+        sentence = (' '.join(sentence)).replace('-', ' ')
         cv2.putText(image, ' '.join(sentence), (3,30), 
                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
         
