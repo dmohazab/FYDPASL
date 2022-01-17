@@ -89,7 +89,7 @@ sequence = []
 sentence = []
 threshold = 0.8
 start = None
-actions = np.array(['hello','no'])
+actions = np.array(['hello','no', '-'])
 
 model = load_model('action')
 
@@ -122,7 +122,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             
         #3. Viz logic
             if res[np.argmax(res)] > threshold: 
-                if actions[np.argmax(res)] == '':
+                if actions[np.argmax(res)] == '-':
                     if start:
                         elapsed = timer() - start
                         if elapsed>5:
