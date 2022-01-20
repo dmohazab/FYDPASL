@@ -4,6 +4,7 @@ from tensorflow.keras.layers import LSTM, Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
+import tensorflow as tf
 
 import numpy as np
 import os
@@ -52,3 +53,8 @@ model.compile(optimizer='Adam', loss='categorical_crossentropy',
 model.fit(X_train, y_train, epochs=2000)
 
 model.save('action')
+converter = tf.lite.TFLiteConverter.from_saved_model('action')
+tflite_model = converter.convert()
+
+with open('model.tflite', 'wb') as f:
+    f.write(tflite_model)
