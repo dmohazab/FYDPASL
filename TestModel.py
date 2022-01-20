@@ -103,7 +103,7 @@ def model_predict(data):
     interpreter.set_tensor(input_details[0]['index'], inp)
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
-    return output_data[0][0]
+    return output_data
 
 cap = cv2.VideoCapture(0)
 # Set mediapipe model 
@@ -127,29 +127,13 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         sequence = sequence[-30:]
         
         if len(sequence) == 30:
-            res = model_predict(np.expand_dims(sequence, axis=0))
+            res = model_predict(np.expand_dims(sequence, axis=0))[0]
             # res = model.predict(np.expand_dims(sequence, axis=0))[0]
             print(actions[np.argmax(res)])
             
             
-        #3. Viz logic
-            # if res[np.argmax(res)] > threshold: 
-            #     if actions[np.argmax(res)] == '-':
-            #         if start:
-            #             elapsed = timer() - start
-            #             if elapsed>10:
-            #                 break
-            #         else:
-            #             start = timer()
-            #     elif start:
-            #         start = None
-            #     else:
-            #         if len(sentence) > 0:
-            #             if actions[np.argmax(res)] != sentence[-1]:
-            #                 sentence.append(actions[np.argmax(res)])
-            #         else:
-            #             sentence.append(actions[np.argmax(res)])
-            if res > threshold: 
+        # 3. Viz logic
+            if res[np.argmax(res)] > threshold: 
                 if actions[np.argmax(res)] == '-':
                     if start:
                         elapsed = timer() - start
