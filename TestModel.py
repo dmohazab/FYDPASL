@@ -8,6 +8,7 @@ import time
 import mediapipe as mp
 from tensorflow.keras.models import load_model
 from timeit import default_timer as timer
+import tflite_runtime.interpreter as tflite
 
 mp_holistic = mp.solutions.holistic  # Holistic model
 mp_drawing = mp.solutions.drawing_utils  # Drawing utilities
@@ -91,7 +92,19 @@ threshold = 0.9
 start = None
 actions = np.array(['hello','no', '-', 'thank-you'])
 
-model = load_model('action')
+# model = load_model('action')
+interpreter = tflite.Interpreter(model_path='model.tflite')
+interpreter.allocate_tensors()
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+def model_predict(data):
+    tensor = np.expand_dims(sequence, axis=0)
+    tensor = np.expand_dims(tensor, axis=0)
+    interpreter.set_tensor(input_details[0]['index'], tensor)
+    interpreter.invoke()
+    output_data = interpreter.get_tensor(output_details[0]['index'])
+    return output_data[0][0]
 
 cap = cv2.VideoCapture(0)
 # Set mediapipe model 
@@ -115,7 +128,8 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         sequence = sequence[-30:]
         
         if len(sequence) == 30:
-            res = model.predict(np.expand_dims(sequence, axis=0))[0]
+            res = model_predict(np.expand_dims(sequence, axis=0))
+            # res = model.predict(np.expand_dims(sequence, axis=0))[0]
             print(actions[np.argmax(res)])
             
             
