@@ -1,12 +1,9 @@
 from sklearn.metrics import multilabel_confusion_matrix, accuracy_score
 import cv2
-import matplotlib
 import numpy as np
-import os
 from matplotlib import pyplot as plt
-import time
 import mediapipe as mp
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
 from timeit import default_timer as timer
 import tflite_runtime.interpreter as tflite
 
