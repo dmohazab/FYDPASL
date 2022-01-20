@@ -99,9 +99,7 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
 def model_predict(data):
-    tensor = np.expand_dims(sequence, axis=0)
-    tensor = np.expand_dims(tensor, axis=0)
-    interpreter.set_tensor(input_details[0]['index'], tensor)
+    interpreter.set_tensor(input_details[0]['index'], data)
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
     return output_data[0][0]
