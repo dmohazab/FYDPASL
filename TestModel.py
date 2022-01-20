@@ -99,7 +99,7 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
 def model_predict(data):
-    inp = data.astype(np.float64)
+    inp = data.astype(np.float32)
     interpreter.set_tensor(input_details[0]['index'], inp)
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
