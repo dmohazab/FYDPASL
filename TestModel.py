@@ -99,7 +99,7 @@ input_details = interpreter.get_input_details()
 output_details = interpreter.get_output_details()
 
 def model_predict(data):
-    inp = data.astype(np.float32)
+    inp = data.astype('float32')
     interpreter.set_tensor(input_details[0]['index'], inp)
     interpreter.invoke()
     output_data = interpreter.get_tensor(output_details[0]['index'])
@@ -133,7 +133,23 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             
             
         #3. Viz logic
-            if res[np.argmax(res)] > threshold: 
+            # if res[np.argmax(res)] > threshold: 
+            #     if actions[np.argmax(res)] == '-':
+            #         if start:
+            #             elapsed = timer() - start
+            #             if elapsed>10:
+            #                 break
+            #         else:
+            #             start = timer()
+            #     elif start:
+            #         start = None
+            #     else:
+            #         if len(sentence) > 0:
+            #             if actions[np.argmax(res)] != sentence[-1]:
+            #                 sentence.append(actions[np.argmax(res)])
+            #         else:
+            #             sentence.append(actions[np.argmax(res)])
+            if res > threshold: 
                 if actions[np.argmax(res)] == '-':
                     if start:
                         elapsed = timer() - start
